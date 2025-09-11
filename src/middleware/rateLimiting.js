@@ -1,7 +1,3 @@
-// This code sets up rate limiting for an Express.js server using the express-rate-limit middleware. Rate limiting helps protect your server from abuse or accidental overload by restricting how many requests a client can make in a given time window.
-
-
-
 
 import rateLimit from "express-rate-limit";
 
