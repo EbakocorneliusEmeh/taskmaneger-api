@@ -11,7 +11,7 @@ app.use("/auth", authRoutes);
 app.use("/tasks", taskRoutes);
 
 app.use((req, res) => {
-  res.status(404).json({ status: "error", message: "Route not found" });
+  res.status(404).json({ status: "welcome", message: "welcome" });
 });
 
 export default app;
