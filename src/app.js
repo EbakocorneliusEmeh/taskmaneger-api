@@ -10,8 +10,9 @@ app.use(express.json());
 app.use("/auth", authRoutes);
 app.use("/tasks", taskRoutes);
 
+// 404 handler
 app.use((req, res) => {
-  res.status(404).json({ status: "welcome", message: "welcome" });
+  res.status(404).json({ status: "error", message: "Route not found" });
 });
 
 export default app;
