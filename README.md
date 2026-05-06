@@ -273,4 +273,4 @@ Tasks:
 ✔ Overdue tasks
 ✔ Assignment rules
 
-### How to clone  https://github.com/EbakocorneliusEmeh/taskmaneger-api.git
+### How to clone  ''https://github.com/EbakocorneliusEmeh/taskmaneger-api.git''
