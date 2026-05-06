@@ -1,25 +1,46 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
 
 const auth = async (req, res, next) => {
-	try {
-		const tokenProvidedByUser = req
-			.header('Authorization')
-			.replace('Bearer ', '');
-		const decode = jwt.verify(tokenProvidedByUser, process.env.JWT_SECRET_KEY);
-		const user = await User.findOne({
-			_id: decode._id,
-			'tokens.token': tokenProvidedByUser
-		});
-		if (!user) {
-			throw new Error();
-		}
-		req.token = tokenProvidedByUser;
-		req.user = user;
-		next();
-	} catch (e) {
-		res.status(401).json({ status: 'fail', error: 'Please authenticate.' });
-	}
+  try {
+    const authHeader = req.header('Authorization');
+
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({
+        status: 'fail',
+        error: 'Authentication token missing',
+      });
+    }
+
+    const tokenProvidedByUser = authHeader.replace('Bearer ', '').trim();
+
+    const decoded = jwt.verify(
+      tokenProvidedByUser,
+      process.env.JWT_SECRET_KEY
+    );
+
+    const user = await User.findOne({
+      _id: decoded._id,
+      'tokens.token': tokenProvidedByUser,
+    });
+
+    if (!user) {
+      return res.status(401).json({
+        status: 'fail',
+        error: 'Invalid token or user not found',
+      });
+    }
+
+    req.token = tokenProvidedByUser;
+    req.user = user;
+
+    next();
+  } catch (error) {
+    return res.status(401).json({
+      status: 'fail',
+      error: 'Please authenticate.',
+    });
+  }
 };
 
-module.exports = auth;
+export default auth;

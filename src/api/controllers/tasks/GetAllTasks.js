@@ -1,38 +1,42 @@
-module.exports = async (req, res) => {
-	const match = {};
-	const sort = {};
+import Task from '../../models/Task.js';
 
-	if (req.query.completed) {
-		match.completed = req.query.completed === 'true';
-	}
+const GetAllTasks = async (req, res) => {
+  const match = {};
+  const sort = {};
 
-	if (req.query.sortBy) {
-		const parts = req.query.sortBy.split(':');
-		if (parts[1].toUpperCase() === 'DESC') {
-			sort[parts[0]] = -1;
-		} else if (parts[1].toUpperCase() === 'ASC') {
-			sort[parts[0]] = 1;
-		} else {
-			res.status(400).json({
-				status: 'fail',
-				error: 'Allowed only asc and desc for sorting criterial'
-			});
-		}
-	}
-	try {
-		await req.user
-			.populate({
-				path: 'tasks',
-				match,
-				options: {
-					limit: parseInt(req.query.limit),
-					skip: parseInt(req.query.skip),
-					sort
-				}
-			})
-			.execPopulate();
-		res.status(200).json({ status: 'success', user: req.user.tasks });
-	} catch (error) {
-		res.status(500).json({ status: 'fail', error });
-	}
+  // Filtering: /tasks?completed=true
+  if (req.query.completed) {
+    match.completed = req.query.completed === 'true';
+  }
+
+  // Sorting: /tasks?sortBy=createdAt:asc
+  if (req.query.sortBy) {
+    const [field, order] = req.query.sortBy.split(':');
+
+    sort[field] = order.toLowerCase() === 'desc' ? -1 : 1;
+  }
+
+  try {
+    const tasks = await Task.find(
+      { owner: req.user._id, ...match },
+      null,
+      {
+        limit: parseInt(req.query.limit) || undefined,
+        skip: parseInt(req.query.skip) || undefined,
+        sort: Object.keys(sort).length ? sort : undefined
+      }
+    );
+
+    res.status(200).json({
+      status: 'success',
+      tasks
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'fail',
+      error: error.message
+    });
+  }
 };
+
+export default GetAllTasks;

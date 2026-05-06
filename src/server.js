@@ -1,10 +1,12 @@
-require('dotenv').config()
-const http = require('http')
-const { app } = require('./app')
-require('./utils/db/mongoose')
+import 'dotenv/config';
+import http from 'http';
+import { app } from './app.js';
+import './utils/db/mongoose.js';
 
-const port = process.env.PORT || 5991
+const port = process.env.PORT || 5991;
 
-const server = http.createServer(app)
+const server = http.createServer(app);
 
-server.listen(port, () => console.log(`Server listening on port ${port}`))
+server.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
+});
