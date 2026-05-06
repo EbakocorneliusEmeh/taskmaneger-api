@@ -272,3 +272,5 @@ Tasks:
 ✔ Filters
 ✔ Overdue tasks
 ✔ Assignment rules
+
+### How to clone  https://github.com/EbakocorneliusEmeh/taskmaneger-api.git
