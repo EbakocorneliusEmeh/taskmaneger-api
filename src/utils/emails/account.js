@@ -1,9 +1,20 @@
+import dotenv from 'dotenv';
 import sgMail from '@sendgrid/mail';
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+dotenv.config({ path: 'local.env' });
+
+const sendgridApiKey = process.env.SENDGRID_API_KEY;
+
+if (sendgridApiKey && sendgridApiKey.startsWith('SG.')) {
+  sgMail.setApiKey(sendgridApiKey);
+}
 
 export const sendWelcomeEmailMessage = async (email, name) => {
   try {
+    if (!sendgridApiKey || !sendgridApiKey.startsWith('SG.')) {
+      return;
+    }
+
     await sgMail.send({
       to: email,
       from: 'akeren.dev@gmail.com',
@@ -17,6 +28,10 @@ export const sendWelcomeEmailMessage = async (email, name) => {
 
 export const sendCancelationEmailMessage = async (email, name) => {
   try {
+    if (!sendgridApiKey || !sendgridApiKey.startsWith('SG.')) {
+      return;
+    }
+
     await sgMail.send({
       to: email,
       from: 'noreply@kate.dev',
