@@ -4,12 +4,10 @@ const GetAllTasks = async (req, res) => {
   const match = {};
   const sort = {};
 
-  // Filtering: /tasks?completed=true
   if (req.query.completed) {
     match.completed = req.query.completed === 'true';
   }
 
-  // Sorting: /tasks?sortBy=createdAt:asc
   if (req.query.sortBy) {
     const [field, order] = req.query.sortBy.split(':');
 

@@ -13,7 +13,6 @@ import UploadAvatar from '../controllers/users/UploadAvatar.js';
 import DeleteAvatar from '../controllers/users/DeleteAvatar.js';
 import GetAvatar from '../controllers/users/GetAvatar.js';
 
-// utils
 import errorMessage from '../../utils/errors/message.js';
 
 const router = express.Router();
