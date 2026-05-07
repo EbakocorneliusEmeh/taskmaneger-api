@@ -128,7 +128,7 @@ package.json
 .env
 README.md
 
-🔐 Password Hashing (Node crypto PBKDF2 Example)
+🔐 Password should be hash (Node crypto PBKDF2 Example)
 import crypto from "crypto";
 
 export function hashPassword(password) {
@@ -216,8 +216,8 @@ Body:
 {
   "title": "Write documentation",
   "description": "Add details",
-  "due_date": "2025-02-05",
-  "assigned_to": 3
+  "due_date": "2025-02-10",
+  "assigned_to": 5
 }
 
 PATCH /tasks/:id/complete
